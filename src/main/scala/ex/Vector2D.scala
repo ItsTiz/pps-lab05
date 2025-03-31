@@ -1,11 +1,14 @@
 package ex
 
+import ex.Vector2D.CaseVector2D
+
 import scala.math.sqrt // Needed for magnitude calculation
 
 // Represents a vector in 2D space
 // Structure: x-component and y-component
 trait Vector2D:
   def x: Double
+
   def y: Double
 
   // Vector addition: (x1, y1) + (x2, y2) = (x1+x2, y1+y2)
@@ -25,7 +28,40 @@ trait Vector2D:
 
 object Vector2D:
   // Factory method to create Vector2D instances
-  def apply(x: Double, y: Double): Vector2D = ???
+  def apply(x: Double, y: Double): Vector2D = Vector2DImpl(x, y)
+
+  private class Vector2DImpl(override val x: Double, override val y: Double) extends Vector2D:
+    override def +(other: Vector2D): Vector2D =
+      Vector2DImpl(x + other.x, y + other.y)
+
+    override def -(other: Vector2D): Vector2D =
+      Vector2DImpl(x - other.x, y - other.y)
+
+    override def *(scalar: Double): Vector2D =
+      Vector2DImpl(x * scalar, y * scalar)
+
+    override def dot(other: Vector2D): Double =
+      x * other.x + y * other.y
+
+    override def magnitude: Double =
+      sqrt(x * x + y * y)
+
+  case class CaseVector2D(override val x: Double, override val y: Double) extends Vector2D:
+
+    override def +(other: Vector2D): Vector2D =
+      Vector2DImpl(x + other.x, y + other.y)
+
+    override def -(other: Vector2D): Vector2D =
+      Vector2DImpl(x - other.x, y - other.y)
+
+    override def *(scalar: Double): Vector2D =
+      Vector2DImpl(x * scalar, y * scalar)
+
+    override def dot(other: Vector2D): Double =
+      x * other.x + y * other.y
+
+    override def magnitude: Double =
+      sqrt(x * x + y * y)
 
   // Common vectors (optional but nice)
   val zero: Vector2D = apply(0.0, 0.0)
@@ -36,7 +72,7 @@ object Vector2D:
 /** Hints:
  *   - Implement Vector2D with a Vector2DImpl class.
  *   - Initially, use a regular `class`. Check that equality (==) and
- *      toString do not behave as you might expect for a value object representing a vector.
+ *     toString do not behave as you might expect for a value object representing a vector.
  *   - Modify the implementation to use a `case class Vector2DImpl` instead.
  *   - Observe how equality (==) and toString now work correctly out-of-the-box.
  */
@@ -77,3 +113,13 @@ object Vector2D:
   // sum * 3.0 = (6.0, 18.0)
   // (6.0, 18.0) - (1.0, 1.0) = (5.0, 17.0)
   println(s"Multiple Ops: $multipleOps, x: ${multipleOps.x}, y: ${multipleOps.y}")
+
+  val vector1 = Vector2D(5.0, 7.3)
+  val vector2 = Vector2D(5.0, 7.3)
+
+  if vector1 == vector2 then println(s"$vector1 and $vector2 are equal.") else println(s"$vector1 and $vector2 are not equal")
+
+  val caseVector = CaseVector2D(5.0, 7.3)
+  val caseVector2 = CaseVector2D(5.0, 7.3)
+
+  if caseVector == caseVector2 then println(s"$caseVector and $caseVector2 are equal.") else println(s"$caseVector and $caseVector2 are not equal")

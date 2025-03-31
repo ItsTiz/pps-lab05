@@ -12,7 +12,10 @@ trait Course:
 
 object Course:
   // Factory method for creating Course instances
-  def apply(courseId: String, title: String, instructor: String, category: String): Course = ???
+  def apply(courseId: String, title: String, instructor: String, category: String): Course =
+    CaseCourse(courseId, title, instructor, category)
+
+  private case class CaseCourse(courseId: String, title: String, instructor: String, category: String) extends Course
 /**
  * Manages courses and student enrollments on an online learning platform.
  */
@@ -86,8 +89,27 @@ end OnlineCoursePlatform
 
 object OnlineCoursePlatform:
   // Factory method for creating an empty platform instance
-  def apply(): OnlineCoursePlatform = ??? // Fill Here!
+  def apply(): OnlineCoursePlatform = OnlineCoursePlatformImpl() // Fill Here!
 
+  private class OnlineCoursePlatformImpl extends OnlineCoursePlatform:
+
+    override def addCourse(course: Course): Unit = ???
+
+    override def findCoursesByCategory(category: String): Sequence[Course] = ???
+
+    override def getCourse(courseId: String): Optional[Course] = ???
+
+    override def removeCourse(course: Course): Unit = ???
+
+    override def isCourseAvailable(courseId: String): Boolean = ???
+
+    override def enrollStudent(studentId: String, courseId: String): Unit = ???
+
+    override def unenrollStudent(studentId: String, courseId: String): Unit = ???
+
+    override def getStudentEnrollments(studentId: String): Sequence[Course] = ???
+
+    override def isStudentEnrolled(studentId: String, courseId: String): Boolean = ???
 /**
  * Represents an online learning platform that offers courses and manages student enrollments.
  * Hints:
